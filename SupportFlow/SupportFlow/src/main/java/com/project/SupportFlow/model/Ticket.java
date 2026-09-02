@@ -1,5 +1,8 @@
 package com.project.SupportFlow.model;
 
+import com.project.SupportFlow.enums.TicketCategory;
+import com.project.SupportFlow.enums.TicketPriority;
+import com.project.SupportFlow.enums.TicketStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,4 +28,7 @@ public class Ticket {
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private TicketStatus status;
+    private TicketPriority priority;
+    private TicketCategory category;
 }
