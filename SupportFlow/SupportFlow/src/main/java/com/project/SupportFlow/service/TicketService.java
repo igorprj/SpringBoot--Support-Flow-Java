@@ -1,5 +1,8 @@
 package com.project.SupportFlow.service;
 
+import com.project.SupportFlow.dto.TicketRequestDTO;
+import com.project.SupportFlow.dto.TicketResponseDTO;
+import com.project.SupportFlow.dto.TicketUpdateDTO;
 import com.project.SupportFlow.enums.TicketPriority;
 import com.project.SupportFlow.enums.TicketStatus;
 import com.project.SupportFlow.model.Ticket;
@@ -15,39 +18,75 @@ public class TicketService {
 
     private TicketRepository ticketRepository;
 
-    public boolean createTicket(Ticket ticket){
+    public TicketResponseDTO createTicket(TicketRequestDTO ticketRequestDTO) {
+        Ticket ticket = new Ticket();
+
+        createdEntity(ticket, ticketRequestDTO);
+
+        Ticket saved =  ticketRepository.save(ticket);
+
+        return toDTO(saved);
+    }
+
+    public List<TicketResponseDTO> findAllTickets(){
+        List<Ticket> tickets = ticketRepository.findAll();
+
+        return tickets.stream()
+                .map(this::toDTO)
+                .toList();
+    }
+
+    public void deleteTicket(Long id){
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+        ticketRepository.delete(ticket);
+    }
+
+    public TicketResponseDTO findTicketById(Long id){
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+
+        return toDTO(ticket);
+    }
+
+    public TicketResponseDTO updateTicket(Long id, TicketUpdateDTO ticketUpdateDTO){
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+
+        updateEntity(ticket, ticketUpdateDTO);
+
+        Ticket saved = ticketRepository.save(ticket);
+        return toDTO(saved);
+    }
+
+    public void createdEntity(Ticket ticket, TicketRequestDTO ticketRequestDTO){
+        ticket.setTitle(ticketRequestDTO.title());
+        ticket.setDescription(ticketRequestDTO.description());
         ticket.setStatus(TicketStatus.OPEN);
         ticket.setPriority(TicketPriority.MEDIUM);
-
-        ticketRepository.save(ticket);
-
-        return true;
+        ticket.setCategory(ticketRequestDTO.category());
     }
 
-    public List<Ticket> findAllTickets(){
-        return ticketRepository.findAll();
+    public TicketResponseDTO toDTO(Ticket ticket){
+        TicketResponseDTO dto = new TicketResponseDTO(
+                ticket.getId(),
+                ticket.getTitle(),
+                ticket.getDescription(),
+                ticket.getStatus(),
+                ticket.getPriority(),
+                ticket.getCategory(),
+                ticket.getCreatedAt(),
+                ticket.getUpdatedAt()
+        );
+
+        return dto;
     }
 
-    public boolean deleteTicket(Long id){
-        if(!ticketRepository.existsById(id)){
-            return false;
-        }
-
-        ticketRepository.deleteById(id);
-        return true;
-    }
-
-    public Ticket findTicketById(Long id){
-        return ticketRepository.findById(id).get();
-    }
-
-    public boolean updateTicket(Long id, Ticket ticket){
-        if(!ticketRepository.existsById(id)){
-            return false;
-        }
-
-        ticketRepository.save(ticket);
-
-        return true;
+    public void updateEntity(Ticket ticket, TicketUpdateDTO ticketUpdateDTO){
+        ticket.setTitle(ticketUpdateDTO.title());
+        ticket.setDescription(ticketUpdateDTO.description());
+        ticket.setStatus(ticketUpdateDTO.status());
+        ticket.setPriority(ticketUpdateDTO.priority());
+        ticket.setCategory(ticketUpdateDTO.category());
     }
 }
