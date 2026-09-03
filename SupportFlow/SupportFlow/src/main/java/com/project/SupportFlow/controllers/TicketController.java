@@ -20,32 +20,29 @@ public class TicketController {
     private TicketService ticketService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<TicketResponseDTO> createTicket(@RequestBody TicketRequestDTO dto){
-        return ResponseEntity.ok(ticketService.createTicket(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(ticketService.createTicket(dto));
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<TicketResponseDTO>> getAllTickets(){
-        return ResponseEntity.ok(ticketService.findAllTickets());
+        return ResponseEntity.status(HttpStatus.OK).body(ticketService.findAllTickets());
     }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{id}")
     public ResponseEntity<TicketResponseDTO> getTicketById(@RequestParam Long id){
-        return ResponseEntity.ok(ticketService.findTicketById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(ticketService.findTicketById(id));
     }
 
-    @DeleteMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTicket(@PathVariable Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTicket(@PathVariable Long id){
         ticketService.deleteTicket(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PutMapping
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<TicketResponseDTO> updateTicket(@RequestBody @PathVariable long id, TicketUpdateDTO dto){
-        return ResponseEntity.ok(ticketService.updateTicket(id, dto));
+    @PutMapping("/{id}")
+    public ResponseEntity<TicketResponseDTO> updateTicket(@PathVariable Long id, @RequestBody TicketUpdateDTO dto){
+        return ResponseEntity.status(HttpStatus.OK).body(ticketService.updateTicket(id, dto));
     }
 }
