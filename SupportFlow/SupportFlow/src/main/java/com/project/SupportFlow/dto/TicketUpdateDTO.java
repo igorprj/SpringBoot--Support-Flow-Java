@@ -7,8 +7,8 @@ import com.project.SupportFlow.enums.TicketStatus;
 public record TicketUpdateDTO(
         String title,
         String description,
-        TicketPriority priority,
         TicketStatus status,
+        TicketPriority priority,
         TicketCategory category
 ) {
 }
