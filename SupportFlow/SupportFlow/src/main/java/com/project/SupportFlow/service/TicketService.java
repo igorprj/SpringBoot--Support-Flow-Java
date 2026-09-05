@@ -53,6 +53,22 @@ public class TicketService {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Ticket not found"));
 
+        if(ticket.getStatus().equals(TicketStatus.OPEN) && ticketUpdateDTO.status().equals(TicketStatus.CLOSED)){
+            throw new RuntimeException("Invalid Ticket Status Transition");
+        }
+
+        if(ticket.getStatus().equals(TicketStatus.CLOSED) && ticketUpdateDTO.status().equals(TicketStatus.OPEN)){
+            throw new RuntimeException("Closed ticket cannot be reopened");
+        }
+
+        if(ticket.getStatus().equals(TicketStatus.IN_PROGRESS) && ticketUpdateDTO.status().equals(TicketStatus.CLOSED)){
+            throw new RuntimeException("Invalid Ticket Status Transition");
+        }
+
+        if(!ticket.getStatus().equals(TicketStatus.RESOLVED) && ticketUpdateDTO.status().equals(TicketStatus.CLOSED)){
+            throw new RuntimeException("Invalid Ticket Status Transition");
+        }
+
         updateEntity(ticket, ticketUpdateDTO);
 
         Ticket saved = ticketRepository.save(ticket);
