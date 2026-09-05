@@ -75,7 +75,7 @@ public class TicketService {
         return toDTO(saved);
     }
 
-    public void createdEntity(Ticket ticket, TicketRequestDTO ticketRequestDTO){
+    private void createdEntity(Ticket ticket, TicketRequestDTO ticketRequestDTO){
         ticket.setTitle(ticketRequestDTO.title());
         ticket.setDescription(ticketRequestDTO.description());
         ticket.setStatus(TicketStatus.OPEN);
@@ -83,7 +83,7 @@ public class TicketService {
         ticket.setCategory(ticketRequestDTO.category());
     }
 
-    public TicketResponseDTO toDTO(Ticket ticket){
+    private TicketResponseDTO toDTO(Ticket ticket){
         TicketResponseDTO dto = new TicketResponseDTO(
                 ticket.getId(),
                 ticket.getTitle(),
@@ -98,7 +98,7 @@ public class TicketService {
         return dto;
     }
 
-    public void updateEntity(Ticket ticket, TicketUpdateDTO ticketUpdateDTO){
+    private void updateEntity(Ticket ticket, TicketUpdateDTO ticketUpdateDTO){
         ticket.setTitle(ticketUpdateDTO.title());
         ticket.setDescription(ticketUpdateDTO.description());
         ticket.setStatus(ticketUpdateDTO.status());
