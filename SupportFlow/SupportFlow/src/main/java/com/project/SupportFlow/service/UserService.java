@@ -1,12 +1,10 @@
 package com.project.SupportFlow.service;
 
 import com.project.SupportFlow.dto.*;
-import com.project.SupportFlow.enums.TicketPriority;
-import com.project.SupportFlow.enums.TicketStatus;
-import com.project.SupportFlow.model.Ticket;
 import com.project.SupportFlow.model.User;
 import com.project.SupportFlow.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +14,8 @@ import java.util.List;
 public class UserService {
 
     private UserRepository userRepository;
+
+    private PasswordEncoder passwordEncoder;
 
     public UserResponseDTO register(UserRequestDTO dto) {
         User  user = new User();
@@ -61,7 +61,7 @@ public class UserService {
     private void createdEntity(User user, UserRequestDTO dto){
         user.setName(dto.name());
         user.setEmail(dto.email());
-        user.setPassword(dto.password());
+        user.setPassword(passwordEncoder.encode(dto.password()));
     }
 
     private UserResponseDTO toDTO(User user){
@@ -77,6 +77,6 @@ public class UserService {
     private void updateEntity(User user, UserRequestDTO dto){
         user.setName(dto.name());
         user.setEmail(dto.email());
-        user.setPassword(dto.password());
+        user.setPassword(passwordEncoder.encode(dto.password()));
     }
 }
