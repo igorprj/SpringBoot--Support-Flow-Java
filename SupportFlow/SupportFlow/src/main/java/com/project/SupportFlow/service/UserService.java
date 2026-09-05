@@ -1,9 +1,6 @@
 package com.project.SupportFlow.service;
 
-import com.project.SupportFlow.dto.TicketRequestDTO;
-import com.project.SupportFlow.dto.TicketResponseDTO;
-import com.project.SupportFlow.dto.UserRequestDTO;
-import com.project.SupportFlow.dto.UserResponseDTO;
+import com.project.SupportFlow.dto.*;
 import com.project.SupportFlow.enums.TicketPriority;
 import com.project.SupportFlow.enums.TicketStatus;
 import com.project.SupportFlow.model.Ticket;
@@ -20,7 +17,7 @@ public class UserService {
 
     private UserRepository userRepository;
 
-    public UserResponseDTO createUser(UserRequestDTO dto) {
+    public UserResponseDTO register(UserRequestDTO dto) {
         User  user = new User();
 
         createdEntity(user, dto);
@@ -51,6 +48,16 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    public UserResponseDTO updateUser(Long id, UserRequestDTO dto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        updateEntity(user, dto);
+
+        User saved = userRepository.save(user);
+        return toDTO(saved);
+    }
+
     private void createdEntity(User user, UserRequestDTO dto){
         user.setName(dto.name());
         user.setEmail(dto.email());
@@ -65,5 +72,11 @@ public class UserService {
         );
 
         return dto;
+    }
+
+    private void updateEntity(User user, UserRequestDTO dto){
+        user.setName(dto.name());
+        user.setEmail(dto.email());
+        user.setPassword(dto.password());
     }
 }
