@@ -1,3 +1,13 @@
 spring:
-  application:
-    name: SupportFlow
+  datasource:
+    url: jdbc:postgresql://localhost:5432/supportflow
+    username: postgres
+    password: postgres
+
+jpa:
+  hibernate:
+    ddl-auto: update
+    show-sql: true
+
+jwt.expiration: 9000
+jwt.secret: MinhaChavaSuperHiperMegaSecreta2026

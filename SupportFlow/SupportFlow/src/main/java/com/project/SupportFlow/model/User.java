@@ -35,8 +35,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role")
+
+    @Enumerated(EnumType.STRING)
     private Role role;
 
 
