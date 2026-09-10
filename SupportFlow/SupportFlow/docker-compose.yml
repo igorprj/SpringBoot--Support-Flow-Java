@@ -11,6 +11,13 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: supportflow-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
   app:
     build: .
     container_name: supportflow-api
