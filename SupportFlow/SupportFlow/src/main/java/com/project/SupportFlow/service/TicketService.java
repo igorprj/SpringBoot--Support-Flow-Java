@@ -5,6 +5,7 @@ import com.project.SupportFlow.dto.TicketResponseDTO;
 import com.project.SupportFlow.dto.TicketUpdateDTO;
 import com.project.SupportFlow.enums.TicketPriority;
 import com.project.SupportFlow.enums.TicketStatus;
+import com.project.SupportFlow.messaging.producer.TickerProducer;
 import com.project.SupportFlow.model.Ticket;
 import com.project.SupportFlow.repositories.TicketRepository;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,8 @@ public class TicketService {
 
     private TicketRepository ticketRepository;
 
+    private TickerProducer tickerProducer;
+
     public TicketResponseDTO createTicket(TicketRequestDTO ticketRequestDTO) {
         Ticket ticket = new Ticket();
 
@@ -25,7 +28,11 @@ public class TicketService {
 
         Ticket saved =  ticketRepository.save(ticket);
 
-        return toDTO(saved);
+        TicketResponseDTO response = toDTO(saved);
+
+        tickerProducer.sendTicket(response);
+
+        return response;
     }
 
     public List<TicketResponseDTO> findAllTickets(){
