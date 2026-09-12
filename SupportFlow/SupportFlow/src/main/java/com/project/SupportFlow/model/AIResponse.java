@@ -15,6 +15,7 @@ public class AIResponse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(columnDefinition = "TEXT")
     private String response;
 
     @ManyToOne

@@ -8,6 +8,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
+
 @Component
 @AllArgsConstructor
 public class TicketConsumer {
@@ -16,7 +18,7 @@ public class TicketConsumer {
     private AIResponseService aiResponseService;
 
     @RabbitListener(queues = "supportflow.ticket.created")
-    public void receiveMessage(String message){
+    public void receiveMessage(String message) throws IOException, InterruptedException {
         TicketResponseDTO dto = objectMapper.readValue(message, TicketResponseDTO.class);
 
         Ticket ticket = new Ticket();
