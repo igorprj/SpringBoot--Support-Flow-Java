@@ -33,6 +33,8 @@ services:
       POSTGRES_URL: jdbc:postgresql://postgres:5432/supportflow
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      AI_APIKEY: ${AI_API_KEY}
+      AI_APIMODEL: ${AI_API_MODEL}
 
 volumes:
   postgres_data:

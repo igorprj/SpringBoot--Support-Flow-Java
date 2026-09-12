@@ -17,3 +17,5 @@ spring:
 
 jwt.expiration: 9000
 jwt.secret: MinhaChavaSuperHiperMegaSecreta2026
+ai.apikey: ${AI_API_KEY}
+ai.apimodel: ${AI_API_MODEL}
