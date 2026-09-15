@@ -12,16 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/auth")
+@RequestMapping("/v1/users")
 @AllArgsConstructor
 public class UserController {
 
     private UserService userService;
-
-    @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(dto));
-    }
 
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
