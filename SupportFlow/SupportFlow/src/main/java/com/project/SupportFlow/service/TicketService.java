@@ -7,8 +7,12 @@ import com.project.SupportFlow.enums.TicketPriority;
 import com.project.SupportFlow.enums.TicketStatus;
 import com.project.SupportFlow.messaging.producer.TickerProducer;
 import com.project.SupportFlow.model.Ticket;
+import com.project.SupportFlow.model.User;
 import com.project.SupportFlow.repositories.TicketRepository;
+import com.project.SupportFlow.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,10 +25,20 @@ public class TicketService {
 
     private TickerProducer tickerProducer;
 
+    private UserRepository userRepository;
+
     public TicketResponseDTO createTicket(TicketRequestDTO ticketRequestDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         Ticket ticket = new Ticket();
 
         createdEntity(ticket, ticketRequestDTO);
+        ticket.setUser(user);
 
         Ticket saved =  ticketRepository.save(ticket);
 

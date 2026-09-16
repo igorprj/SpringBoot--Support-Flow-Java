@@ -39,8 +39,6 @@ public class SecurityConfig {
                         auth.requestMatchers("/v1/auth/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                                 .requestMatchers("/v1/users/**").hasRole("ADMIN")
                                 .requestMatchers("/v1/ticket").permitAll()
-                                .requestMatchers("/v1/transactions/**").hasAnyRole("USER", "ADMIN")
-
                                 .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();
     }

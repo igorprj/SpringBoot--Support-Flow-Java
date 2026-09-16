@@ -29,4 +29,18 @@ public class Ticket {
     private TicketStatus status;
     private TicketPriority priority;
     private TicketCategory category;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }
