@@ -5,6 +5,8 @@ import com.project.SupportFlow.dto.TicketResponseDTO;
 import com.project.SupportFlow.dto.TicketUpdateDTO;
 import com.project.SupportFlow.enums.TicketPriority;
 import com.project.SupportFlow.enums.TicketStatus;
+import com.project.SupportFlow.exceptions.InvalidTicketTransiction;
+import com.project.SupportFlow.exceptions.TicketNotFoundException;
 import com.project.SupportFlow.messaging.producer.TickerProducer;
 import com.project.SupportFlow.model.Ticket;
 import com.project.SupportFlow.model.User;
@@ -59,35 +61,35 @@ public class TicketService {
 
     public void deleteTicket(Long id){
         Ticket ticket = ticketRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+                .orElseThrow(() -> new TicketNotFoundException("Ticket not found"));
         ticketRepository.delete(ticket);
     }
 
     public TicketResponseDTO findTicketById(Long id){
         Ticket ticket = ticketRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+                .orElseThrow(() -> new TicketNotFoundException("Ticket not found"));
 
         return toDTO(ticket);
     }
 
     public TicketResponseDTO updateTicket(Long id, TicketUpdateDTO ticketUpdateDTO){
         Ticket ticket = ticketRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ticket not found"));
+                .orElseThrow(() -> new TicketNotFoundException("Ticket not found"));
 
         if(ticket.getStatus().equals(TicketStatus.OPEN) && ticketUpdateDTO.status().equals(TicketStatus.CLOSED)){
-            throw new RuntimeException("Invalid Ticket Status Transition");
+            throw new InvalidTicketTransiction("Invalid Ticket Status Transition");
         }
 
         if(ticket.getStatus().equals(TicketStatus.CLOSED) && ticketUpdateDTO.status().equals(TicketStatus.OPEN)){
-            throw new RuntimeException("Closed ticket cannot be reopened");
+            throw new InvalidTicketTransiction("Closed ticket cannot be reopened");
         }
 
         if(ticket.getStatus().equals(TicketStatus.IN_PROGRESS) && ticketUpdateDTO.status().equals(TicketStatus.CLOSED)){
-            throw new RuntimeException("Invalid Ticket Status Transition");
+            throw new InvalidTicketTransiction("Invalid Ticket Status Transition");
         }
 
         if(!ticket.getStatus().equals(TicketStatus.RESOLVED) && ticketUpdateDTO.status().equals(TicketStatus.CLOSED)){
-            throw new RuntimeException("Invalid Ticket Status Transition");
+            throw new InvalidTicketTransiction("Invalid Ticket Status Transition");
         }
 
         updateEntity(ticket, ticketUpdateDTO);

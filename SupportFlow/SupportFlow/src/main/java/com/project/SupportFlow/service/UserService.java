@@ -1,6 +1,7 @@
 package com.project.SupportFlow.service;
 
 import com.project.SupportFlow.dto.*;
+import com.project.SupportFlow.exceptions.UserNotFoundException;
 import com.project.SupportFlow.model.User;
 import com.project.SupportFlow.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -37,20 +38,20 @@ public class UserService {
 
     public UserResponseDTO findUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         return toDTO(user);
     }
 
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
-                        .orElseThrow(() -> new RuntimeException("User not found"));
+                        .orElseThrow(() -> new UserNotFoundException("User not found"));
         userRepository.delete(user);
     }
 
     public UserResponseDTO updateUser(Long id, UserRequestDTO dto) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         updateEntity(user, dto);
 
