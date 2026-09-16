@@ -4,6 +4,7 @@ import com.project.SupportFlow.config.TokenProvider;
 import com.project.SupportFlow.dto.UserRequestDTO;
 import com.project.SupportFlow.dto.UserResponseDTO;
 import com.project.SupportFlow.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,12 @@ public class AuthController {
     private TokenProvider tokenProvider;
 
     @PostMapping
-    public ResponseEntity<UserResponseDTO> register(@RequestBody UserRequestDTO dto) {
+    public ResponseEntity<UserResponseDTO> register(@Valid @RequestBody UserRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(dto));
     }
 
     @PostMapping
-    public ResponseEntity<String> login(@RequestBody UserRequestDTO dto) {
+    public ResponseEntity<String> login(@Valid @RequestBody UserRequestDTO dto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.email(), dto.password())
         );

@@ -5,6 +5,7 @@ import com.project.SupportFlow.dto.TicketResponseDTO;
 import com.project.SupportFlow.dto.TicketUpdateDTO;
 import com.project.SupportFlow.model.Ticket;
 import com.project.SupportFlow.service.TicketService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class TicketController {
     private TicketService ticketService;
 
     @PostMapping
-    public ResponseEntity<TicketResponseDTO> createTicket(@RequestBody TicketRequestDTO dto){
+    public ResponseEntity<TicketResponseDTO> createTicket(@Valid @RequestBody TicketRequestDTO dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(ticketService.createTicket(dto));
     }
 
@@ -30,19 +31,19 @@ public class TicketController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TicketResponseDTO> getTicketById(@RequestParam Long id){
+    public ResponseEntity<TicketResponseDTO> getTicketById(@Valid @RequestParam Long id){
         return ResponseEntity.status(HttpStatus.OK).body(ticketService.findTicketById(id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTicket(@PathVariable Long id){
+    public ResponseEntity<Void> deleteTicket(@Valid @PathVariable Long id){
         ticketService.deleteTicket(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TicketResponseDTO> updateTicket(@PathVariable Long id, @RequestBody TicketUpdateDTO dto){
+    public ResponseEntity<TicketResponseDTO> updateTicket(@Valid @PathVariable Long id, @RequestBody TicketUpdateDTO dto){
         return ResponseEntity.status(HttpStatus.OK).body(ticketService.updateTicket(id, dto));
     }
 }

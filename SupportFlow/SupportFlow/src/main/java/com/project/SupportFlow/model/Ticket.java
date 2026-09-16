@@ -26,8 +26,12 @@ public class Ticket {
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @Enumerated(EnumType.STRING)
     private TicketStatus status;
+    @Enumerated(EnumType.STRING)
     private TicketPriority priority;
+    @Enumerated(EnumType.STRING)
     private TicketCategory category;
     @ManyToOne
     @JoinColumn(name = "user_id")
