@@ -1,5 +1,6 @@
 package com.project.SupportFlow.handlers;
 
+import com.project.SupportFlow.exceptions.AIResponseNotFoundException;
 import com.project.SupportFlow.exceptions.InvalidTicketTransiction;
 import com.project.SupportFlow.exceptions.TicketNotFoundException;
 import com.project.SupportFlow.exceptions.UserNotFoundException;
@@ -46,5 +47,16 @@ public class GlobalExceptionHandler {
         );
 
         return new ResponseEntity<>(errorResponse.toString(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AIResponseNotFoundException.class)
+    public ResponseEntity<String> handleException(AIResponseNotFoundException ex,  HttpServletRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getMessage(),
+                HttpStatus.NOT_FOUND.name(),
+                request.getRequestURI(),
+                HttpStatus.NOT_FOUND.value()
+        );
+        return new ResponseEntity<>(errorResponse.toString(), HttpStatus.NOT_FOUND);
     }
 }

@@ -7,7 +7,9 @@ import com.project.SupportFlow.enums.TicketCategory;
 import com.project.SupportFlow.enums.TicketPriority;
 import com.project.SupportFlow.enums.TicketStatus;
 import com.project.SupportFlow.model.Ticket;
+import com.project.SupportFlow.model.User;
 import com.project.SupportFlow.repositories.TicketRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,6 +32,16 @@ public class TestTicketService {
 
     @InjectMocks
     private TicketService ticketService;
+
+    private User usuarioLogado;
+
+    @BeforeEach
+    void setUp() {
+        usuarioLogado = new User();
+        usuarioLogado.setId(1L);
+        usuarioLogado.setName("Usuário Teste");
+        usuarioLogado.setEmail("teste@teste.com");
+    }
 
     @Test
     void createTicket() {
