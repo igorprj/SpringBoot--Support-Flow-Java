@@ -15,7 +15,7 @@ spring:
       ddl-auto: update
       show-sql: true
 
-jwt.expiration: 900000
-jwt.secret: MinhaChavaSuperHiperMegaSecreta2026
+jwt.expiration: ${JWT_EXPIRATION}
+jwt.secret: ${JWT_SECRET}
 ai.apikey: ${AI_API_KEY}
 ai.apimodel: ${AI_API_MODEL}
