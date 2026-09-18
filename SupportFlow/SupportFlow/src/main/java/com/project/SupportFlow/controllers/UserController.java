@@ -4,6 +4,7 @@ import com.project.SupportFlow.dto.UserRequestDTO;
 import com.project.SupportFlow.dto.UserResponseDTO;
 import com.project.SupportFlow.repositories.UserRepository;
 import com.project.SupportFlow.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/users")
+@SecurityRequirement(name = "bearerAuth")
 @AllArgsConstructor
 public class UserController {
 

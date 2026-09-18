@@ -1,6 +1,7 @@
 package com.project.SupportFlow.service;
 
 import com.project.SupportFlow.dto.*;
+import com.project.SupportFlow.enums.Role;
 import com.project.SupportFlow.exceptions.UserNotFoundException;
 import com.project.SupportFlow.model.User;
 import com.project.SupportFlow.repositories.UserRepository;
@@ -63,6 +64,7 @@ public class UserService {
         user.setName(dto.name());
         user.setEmail(dto.email());
         user.setPassword(passwordEncoder.encode(dto.password()));
+        user.setRole(Role.USER);
     }
 
     private UserResponseDTO toDTO(User user){

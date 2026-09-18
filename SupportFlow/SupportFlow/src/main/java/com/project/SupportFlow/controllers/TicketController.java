@@ -11,6 +11,7 @@ import com.project.SupportFlow.repositories.AIResponseRepository;
 import com.project.SupportFlow.repositories.TicketRepository;
 import com.project.SupportFlow.service.AIResponseService;
 import com.project.SupportFlow.service.TicketService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/ticket")
+@SecurityRequirement(name = "bearerAuth")
 @AllArgsConstructor
 public class TicketController {
 

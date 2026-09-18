@@ -12,10 +12,6 @@ public record TicketRequestDTO(
         @NotBlank
         String description,
         @NotNull
-        TicketStatus status,
-        @NotNull
-        TicketPriority priority,
-        @NotNull
         TicketCategory category
 ) {
 }

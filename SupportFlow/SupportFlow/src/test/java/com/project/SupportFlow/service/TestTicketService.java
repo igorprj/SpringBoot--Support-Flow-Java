@@ -48,16 +48,14 @@ public class TestTicketService {
         TicketRequestDTO dto = new TicketRequestDTO(
                 "test",
                 "lalalaal",
-                TicketStatus.OPEN,
-                TicketPriority.MEDIUM,
                 TicketCategory.ACCOUNT
         );
 
         Ticket ticketSalva = new Ticket();
         ticketSalva.setTitle(dto.title());
         ticketSalva.setDescription(dto.description());
-        ticketSalva.setStatus(dto.status());
-        ticketSalva.setPriority(dto.priority());
+        ticketSalva.setStatus(TicketStatus.OPEN);
+        ticketSalva.setPriority(TicketPriority.MEDIUM);
         ticketSalva.setCategory(dto.category());
 
 
@@ -68,8 +66,6 @@ public class TestTicketService {
         assertThat(resultado).isNotNull();
         assertThat(resultado.title()).isEqualTo(dto.title());
         assertThat(resultado.description()).isEqualTo(dto.description());
-        assertThat(resultado.status()).isEqualTo(dto.status());
-        assertThat(resultado.priority()).isEqualTo(dto.priority());
         assertThat(resultado.category()).isEqualTo(dto.category());
     }
 
@@ -78,8 +74,6 @@ public class TestTicketService {
         TicketRequestDTO dto = new TicketRequestDTO(
                 "test",
                 "lalalaal",
-                TicketStatus.CLOSED,
-                TicketPriority.HIGH,
                 TicketCategory.ACCOUNT
         );
 
