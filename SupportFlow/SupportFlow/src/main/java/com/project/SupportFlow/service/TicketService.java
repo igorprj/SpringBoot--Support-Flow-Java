@@ -7,12 +7,14 @@ import com.project.SupportFlow.enums.TicketPriority;
 import com.project.SupportFlow.enums.TicketStatus;
 import com.project.SupportFlow.exceptions.InvalidTicketTransiction;
 import com.project.SupportFlow.exceptions.TicketNotFoundException;
+import com.project.SupportFlow.exceptions.UserNotFoundException;
 import com.project.SupportFlow.messaging.producer.TickerProducer;
 import com.project.SupportFlow.model.Ticket;
 import com.project.SupportFlow.model.User;
 import com.project.SupportFlow.repositories.TicketRepository;
 import com.project.SupportFlow.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -52,7 +54,14 @@ public class TicketService {
     }
 
     public List<TicketResponseDTO> findAllTickets(){
-        List<Ticket> tickets = ticketRepository.findAll();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        List<Ticket> tickets = ticketRepository.findByUserId(user.getId());
 
         return tickets.stream()
                 .map(this::toDTO)
@@ -66,8 +75,18 @@ public class TicketService {
     }
 
     public TicketResponseDTO findTicketById(Long id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new TicketNotFoundException("Ticket not found"));
+
+        if (!ticket.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException("Access denied");
+        }
 
         return toDTO(ticket);
     }
